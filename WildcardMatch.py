@@ -48,4 +48,37 @@ Output: false
 """
 class Solution:
     def isMatch(self, s: str, p: str) -> bool:
-        pass
+        # dynamic programming.
+        # first create a matrix for restoring all the previous results.
+        # initialize
+        # find the suitable relation function
+        # return results
+        rows,cols=len(s),len(p)
+        dp=[[False]*(cols+1) for _ in range(rows+1)]
+        # initialize
+        dp[0][0]=True
+        for col in range(1,cols+1):
+            # initialize the first row when s is empty, but p from 0 to cols.
+            # cols  and rows represent the numbers of characters in s and p, respectively.
+            if p[col-1]=="*":
+                dp[0][col]=dp[0][col-1]
+        print (dp)
+        #start to use dp
+        for row in range(1,rows+1):
+            for col in range(1,cols+1):
+                #case 1: e.g. s="abc";p="abc" or "ab?".
+                if p[col-1]==s[row-1] or p[col-1]=="?":
+                    dp[row][col]=dp[row-1][col-1]
+                # case 2: e.g. s="abcd", p="ab*"; case 3:e.g. s="abcd", p="abcd**".
+                elif p[col-1]=="*":
+                    dp[row][col]=dp[row-1][col] or dp[row][col-1]
+        print (dp)
+        return dp[-1][-1]
+
+solution=Solution()
+# s="acdcb"
+# p="a*c?b"
+s = "adceb"
+p = "*a*b"
+ans=solution.isMatch(s,p)
+print (ans)
